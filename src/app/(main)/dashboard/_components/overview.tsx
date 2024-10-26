@@ -18,6 +18,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { withFormValidation } from "@/hooks/use-check-zod";
 
 const FormSchema = z.object({
   dob: z.object({
@@ -39,20 +40,11 @@ export default function OverViewPage() {
     );
   }
 
-  // Log valid and invalid values before submitting
-  const handleCheckBeforeSubmit = () => {
-    const values = form.watch(); // Get current form values
-    const errors = form.formState.errors; // Get validation errors
-
-    console.log("Current Form Values:", values); // Log current form values
-
-    // Check if there are validation errors
-    if (Object.keys(errors).length > 0) {
-      console.log("Validation Errors:", errors); // Log errors if any
-    } else {
-      console.log("No validation errors."); // Log if no errors
-    }
-  };
+  const handleSubmitWithValidation = withFormValidation(form, onSubmit, {
+    showToast: true,
+    onSuccess: () => console.log("Form valid, proceeding with submit"),
+    onError: (errors) => console.log("Found errors:", errors),
+  });
 
   return (
     <PageContainer scrollable>
@@ -63,14 +55,7 @@ export default function OverViewPage() {
           </h2>
           <div className="hidden items-center space-x-2 md:flex">
             <DatePickerWithRange form={form} fieldName="dob" />
-            <Button
-              onClick={() => {
-                handleCheckBeforeSubmit(); // Log values before submit
-                form.handleSubmit(onSubmit)(); // Proceed with submit
-              }}
-            >
-              Download
-            </Button>
+            <Button onClick={handleSubmitWithValidation}>Download</Button>
           </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
