@@ -19,6 +19,7 @@ import { Calendar } from "../ui/calendar";
 import { id } from "date-fns/locale"; // Locale bahasa Indonesia
 import { DateRange } from "react-day-picker";
 import { useState } from "react";
+import { Separator } from "../ui/separator";
 
 interface DatePickerWithRangeProps {
   form: ReturnType<typeof useForm<any>>;
@@ -27,6 +28,7 @@ interface DatePickerWithRangeProps {
   disabled?: boolean;
   className?: string;
   limitToTwoMonths?: boolean; // Props to control the two-month limit
+  onSubmit?: () => void;
 }
 
 export function DatePickerWithRange({
@@ -35,6 +37,7 @@ export function DatePickerWithRange({
   placeholder,
   disabled,
   className,
+  onSubmit,
   limitToTwoMonths = false, // Default is false, can be passed as true from parent
 }: DatePickerWithRangeProps) {
   const [date, setDate] = useState<DateRange | undefined>({
@@ -90,7 +93,7 @@ export function DatePickerWithRange({
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent  className="w-auto p-0 me-8" align="start">
                       <Calendar
                         initialFocus
                         mode="range"
@@ -105,6 +108,11 @@ export function DatePickerWithRange({
                         fromMonth={limitToTwoMonths ? currentMonth : undefined}
                         toMonth={limitToTwoMonths ? nextMonth : undefined}
                       />
+                      <Separator/>
+                      <div className="flex justify-end gap-3 my-3 me-3">
+                          <Button>Cancle</Button>
+                          <Button onClick={onSubmit}>Save</Button>
+                      </div>
                     </PopoverContent>
                   </Popover>
                 </div>

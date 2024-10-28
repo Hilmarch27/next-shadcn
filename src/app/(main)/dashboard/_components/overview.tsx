@@ -54,8 +54,11 @@ export default function OverViewPage() {
             Hi, Welcome back 👋
           </h2>
           <div className="hidden items-center space-x-2 md:flex">
-            <DatePickerWithRange form={form} fieldName="dob" />
-            <Button onClick={handleSubmitWithValidation}>Download</Button>
+            <DatePickerWithRange
+              onSubmit={handleSubmitWithValidation}
+              form={form}
+              fieldName="dob"
+            />
           </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
